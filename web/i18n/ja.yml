@@ -112,6 +112,7 @@ help:
         tags_page: タグのページ
         relations_page: リレーションのページ
         projects_page: プロジェクトのページ
+        reports_page: レポートのページ
         compare_page: 比較のページ
         first_page: 先頭のページ
         prev_page: 前ページ
