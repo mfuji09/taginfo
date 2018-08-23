@@ -106,6 +106,10 @@ function translate(str, fn) {
     return result;
 }
 
+function fmt_desc(lang, dir, desc) {
+    return '<span lang="' + lang + '" dir="' + dir + '">' + html_escape(desc) + '</span>';
+}
+
 function fmt_key(key) {
     if (key == '') {
         return span(texts.misc.empty_string, 'badchar empty');
@@ -365,11 +369,15 @@ function fmt_wiki_image_popup(image) {
     });
 }
 
-function fmt_language(code, native_name, english_name) {
+function fmt_language(code, dir, native_name, english_name) {
     return tag('span', html_escape(code), {
         'class': 'lang',
         title: html_escape(native_name + ' (' + english_name + ')')
-    }) + ' ' + html_escape(native_name);
+    }) + ' ' +
+    tag('span', html_escape(native_name), {
+        lang: code,
+        dir: dir,
+    });
 }
 
 function fmt_type_icon(type, on_or_off) {
@@ -399,7 +407,7 @@ function fmt_with_ts(value) {
     if (value === null) {
         return '-';
     } else {
-        return value.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1&thinsp;');
+        return value.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1&#x202f;');
     }
 }
 

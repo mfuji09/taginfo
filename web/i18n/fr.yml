@@ -107,12 +107,13 @@ help:
             pagedown: PgDn
             esc: Esc
             tab: TAB
-        home_page: Page de démarrage
-        keys_page: Liste des clés
-        tags_page: Liste des tags
-        relations_page: Liste des relations
-        projects_page: Liste des projets
-        compare_page: Comparaisons
+        home_page: Page d'accueil
+        keys_page: Page "Clés"
+        tags_page: Page "Tags"
+        relations_page: Page "Relations"
+        reports_page: Page "Rapports"
+        projects_page: Page "Projets"
+        compare_page: Page "Comparaison de clés/tags"
         first_page: Première page
         prev_page: Page précédente
         next_page: Page suivante
@@ -175,8 +176,9 @@ pages:
             title: À propos de ce site
         building_on_taginfo:
             title: Développer sur taginfo
-            text: |
+            pre: |
                 <p>Vous pouvez utiliser les données de taginfo dans vos projets :</p>
+            api: |
                 <h3>API</h3>
                 <p>Les données de taginfo sont accessibles via une API REST. Regardez la
                 <a href="/taginfo/apidoc">documentation de l'API</a> pour plus de détails, les informations d'ordre général sont
@@ -184,12 +186,14 @@ pages:
                 Les serveurs proposants l'API taginfo n'ont pas des ressources illimitées.
                 Utilisez, s'il vous plaît, l'API de manière responsable. En cas de doutes, contactez les administrateurs du
                 site que vous utilisez ou discutez avec nous sur la liste de diffusion.</p>
+            download: |
                 <h3>Téléchargements</h3>
                 <p>Si vous souhaitez "jouer" avec les données de taginfo, vous pouvez télécharger les
                 fichiers de la base de données Sqlite régulièrement mis à jour. Tous les pré-traitements sont fait pour vous.
                 Regardez la <a href="/download">page de téléchargements</a> pour avoir la liste des fichiers. Notez que
                 certains de ces fichiers peuvent être assez lourds. Si vous voulez les télécharger régulièrement,
                 contactez les administrateurs du site que vous utilisez ou contactez-nous sur la liste de diffusion.</p>
+            license: |
                 <h3>License</h3>
                 <p>Les données disponibles via taginfo sont sous licence ODbL, la
                 <a class="extlink" href="//www.openstreetmap.org/copyright">même
@@ -208,7 +212,7 @@ pages:
                 <a class="extlink" href="//wiki.openstreetmap.org/wiki/Taginfo/I18N">le wiki d'OSM</a>.</p>
                 <h3>Code</h3>
                 <p>Tous le code des sites taginfo est Open Source. Vous pouvez l'obtenir sur
-                <a class="extlink" href="https://github.com/joto/taginfo/">GitHub</a>. Pour avoir une vue d'ensemble
+                <a class="extlink" href="https://github.com/taginfo/taginfo/">GitHub</a>. Pour avoir une vue d'ensemble
                 regardez la page à propos de l'<a class="extlink"
                 href="//wiki.openstreetmap.org/wiki/Taginfo/Architecture">architecture de
                 taginfo</a> sur le wiki d'OSM.</p>
@@ -220,7 +224,7 @@ pages:
                 </a>.</p>
                 <h3>Rapports de bogues et demandes d'améliorations</h3>
                 <p>Les signalements de bogues et les demandes d'améliorations doivent être faites sur le <a class="extlink"
-                href="https://github.com/joto/taginfo/issues">gestionnaire d'erreurs de GitHub</a>. Vous pouvez aussi
+                href="https://github.com/taginfo/taginfo/issues">gestionnaire d'erreurs de GitHub</a>. Vous pouvez aussi
                 en discuter avec nous sur la liste de diffusion.</p>
                 <h3>Contact / liste de diffusion</h3>
                 <p>Contactez nous sur la
@@ -237,11 +241,11 @@ pages:
             intro: Voici la liste des sources utilisées actuellement. D'autres sources pourront être intégrées dans le futur.
         description:
             db: |
-                <p>Les statistiques sur les clés, tags, et types de relations sont générés depuis la <a class="extlink" href="http://planet.openstreetmap.org/">base de données OSM</a> (ou un extrait) ainsi que les cartes présentant la distribution géographique des nœuds et des chemins.</p>
+                <p>Les statistiques sur les clés, tags, et types de relations sont générés depuis la <a class="extlink" href="https://planet.openstreetmap.org/">base de données OSM</a> (ou un extrait) ainsi que les cartes présentant la distribution géographique des nœuds et des chemins.</p>
             wiki: |
                 <p>Le <a class="extlink" href="//wiki.openstreetmap.org/">wiki OSM</a> est lu et toutes les pages <span class="char">Key:*</span>, <span class="char">Tag:*</span> et <span class="char">Relation:*</span> (dans toutes les langues) sont analysées. Descriptions, images, tags associés, etc. en sont extraits.</p>
             languages: |
-                <p>Taginfo récupère les informations sur les différentes langues du monde, leurs codes, noms, etc. depuis plusieurs registres de l'<a class="extlink" href="http://www.iana.org/">IANA</a> et d'<a class="extlink" href="http://www.unicode.org/">Unicode</a>.</p>
+                <p>Taginfo récupère les informations sur les différentes langues du monde, leurs codes, noms, etc. depuis plusieurs registres de l'<a class="extlink" href="https://www.iana.org/">IANA</a> et d'<a class="extlink" href="http://www.unicode.org/">Unicode</a>.</p>
             projects: |
                 <p>Ce sont les projects qui utilisent les tags OSM, comme les éditeurs, les cartes, les routeurs, etc. Regardez <a href="/projects">la liste des projets</a>.</p>
         updates:
@@ -254,7 +258,7 @@ pages:
     download:
         intro: |
             <p>Vous pouvez télécharger les données utilisées par taginfo. Toutes les données sont stockées
-            dans des bases de données <a class="extlink" href="http://www.sqlite.org/">SQLite</a>.
+            dans des bases de données <a class="extlink" href="https://www.sqlite.org/">SQLite</a>.
             Les fichiers de base de données sont ensuite compressés
             avec <a class="extlink" href="http://www.bzip.org/">bzip2</a>.</p>
             <p>Si vous ne voulez pas télécharger les données, vous pouvez toujours y accéder directement grâce à l'<a href="/about">API</a>.</p>
@@ -637,14 +641,14 @@ reports:
                 region: Région
                 variant: Variante
             intro: |
-                <p>L'<a href="http://www.ietf.org/">IETF</a> définit des <i>tags
+                <p>L'<a href="https://www.ietf.org/">IETF</a> définit des <i>tags
                 de langue</i> dans sa norme
-                <a href="http://tools.ietf.org/html/bcp47">Tags for Identifying Languages
+                <a href="https://tools.ietf.org/html/bcp47">Tags for Identifying Languages
                 (BCP47)</a>. Les tags de langue
                 sont constitués d'un ou plusieurs <i>sous-tags</i> décrivant la langue,
                 le script, les variantes, etc... La liste suivante montre les sous-tags
                 existants actuellement et quisont pertinants pour OSM. Pour plus d'information, voir aussi la page
-                <a href="http://en.wikipedia.org/wiki/IETF_language_tag">Wikipedia
+                <a href="https://en.wikipedia.org/wiki/IETF_language_tag">Wikipedia
                 sur les tags de langues de l'IETF</a> et le site <a
                 href="http://www.langtag.net/">langtag.net</a>.</p>
                 <p>Notez que les données présentées dans ce tableau <b>ne proviennent pas</b> d'OpenStreetMap.

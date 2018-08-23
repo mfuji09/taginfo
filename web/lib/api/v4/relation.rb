@@ -105,6 +105,7 @@ class Taginfo < Sinatra::Base
             [:language,         :STRING, 'Language name in its language.'],
             [:language_en,      :STRING, 'Language name in English.'],
             [:title,            :STRING, 'Wiki page title.'],
+            [:dir,              :STRING, 'Writing direction ("ltr", "rtl", or "auto") of description.'],
             [:description,      :STRING, 'Short description of key from wiki page.'],
             [:image,            :HASH,   'Associated image.', [
                 [:title,            :STRING, 'Wiki page title of associated image.' ],
@@ -124,8 +125,10 @@ class Taginfo < Sinatra::Base
 
         res = @db.execute('SELECT * FROM wiki.relation_pages LEFT OUTER JOIN wiki.wiki_images USING (image) WHERE rtype = ? ORDER BY lang', rtype)
 
-        return generate_json_result(res.size, res.map{ |row| {
+        return generate_json_result(res.size, res.map{ |row|
+                {
                 :lang             => row['lang'],
+                :dir              => direction_from_lang_code(row['lang']),
                 :language         => ::Language[row['lang']].native_name,
                 :language_en      => ::Language[row['lang']].english_name,
                 :title            => row['title'],

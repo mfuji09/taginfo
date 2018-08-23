@@ -81,7 +81,7 @@ class Taginfo < Sinatra::Base
 
         @num_texts = {}
         r18n.available_locales.each do |lang|
-            data = YAML.load_file("i18n/#{lang.code}.yml")
+            data = YAML.load_file("i18n/#{lang.code.downcase}.yml")
             @num_texts[lang.code] = count_texts(data)
         end
 
@@ -95,7 +95,7 @@ class Taginfo < Sinatra::Base
         @lang = params[:lang] || 'de'
         @i18n_en = YAML.load_file("i18n/en.yml")
         begin
-            @i18n_lang = YAML.load_file("i18n/#{@lang}.yml")
+            @i18n_lang = YAML.load_file("i18n/#{@lang.downcase}.yml")
         rescue
             @error = "Unknown language: #{@lang}"
         end
@@ -103,7 +103,7 @@ class Taginfo < Sinatra::Base
         c = 'even'
         @line = lambda { |level, key, name, en, other|
             c = (c == '') ? 'even': ''
-            "<tr><td class='#{c}' style='padding-left: #{ level * 16 + 6 }px;'><span title='#{ name }'>#{ key }</span></td><td class='#{c}'>#{ en }</td><td class='#{c}'>#{ other }</td></tr>"
+            "<tr><td class='#{c}' style='padding-left: #{ level * 16 + 6 }px;'><span title='#{ name }'>#{ key }</span></td><td class='#{c}'>#{ en }</td><td class='#{c}' lang='#{@lang}' dir='#{direction_from_lang_code(@lang)}'>#{ other }</td></tr>"
         }
 
         javascript "#{ r18n.locale.code }/taginfo/i18n"
@@ -137,6 +137,19 @@ class Taginfo < Sinatra::Base
             execute()[0]
 
         erb :'taginfo/project_error_log'
+    end
+
+    get '/taginfo/wiki-problems' do
+        @title = "Wiki problems"
+        @section = 'taginfo'
+        @section_title = t.taginfo.meta
+
+        @stats_reason = @db.select("SELECT reason, count(*) AS count FROM wiki.problems GROUP BY reason ORDER BY reason").execute()
+        @stats_lang   = @db.select("SELECT lang,   count(*) AS count FROM wiki.problems GROUP BY lang   ORDER BY lang").execute()
+
+        javascript_for(:flexigrid, :d3)
+        javascript "#{ r18n.locale.code }/taginfo/wiki-problems"
+        erb :'taginfo/wiki-problems'
     end
 
 end

@@ -179,9 +179,12 @@ pages:
             title: Informazioni su questo sito
         building_on_taginfo:
             title: Sviluppare con taginfo
-            text: |
+            pre: |
                 <p>Puoi usare i dati ottenuti con taginfo nei tuoi
-                progetti:</p> <h3>API</h3> <p>Puoi accedere ai dati di Taginfo
+                progetti:</p>
+            api: |
+                <h3>API</h3>
+                <p>Puoi accedere ai dati di Taginfo
                 tramite una REST API. Vedi la <a
                 href="/taginfo/apidoc">documentazione sull'API</a> per maggiori
                 dettagli, alcune informazioni generali sono presenti <a
@@ -191,7 +194,10 @@ pages:
                 taginfo API non hanno risorse illimitate. Per favore utilizza
                 le API in modo responsabile. In caso di dubbio contatta un
                 responsabile del sito che stai usando o discuti la cosa nella
-                mailing list.</p> <h3>Download</h3> <p>Se vuoi guardare dentro
+                mailing list.</p>
+            download: |
+                <h3>Download</h3>
+                <p>Se vuoi guardare dentro
                 ai dati usati da taginfo, puoi scaricare i file del database
                 Sqlite che vengono regolarmente aggiornati. Tutto il lavoro di
                 preprocessing è già stato fatto per te. Vedi la <a
@@ -199,7 +205,10 @@ pages:
                 file. Si noti che alcuni di questi possono essere
                 particolarmente grandi. Se vuoi scaricarli frequentemente,
                 contatta un responsabile del sito che stai usando o discuti la
-                cosa nella mailing list.</p> <h3>Licenza</h3> <p>I dati
+                cosa nella mailing list.</p>
+            license: |
+                <h3>Licenza</h3>
+                <p>I dati
                 disponibili tramite taginfo sono sotto la licenza ODbL, la <a
                 class="extlink" href="//www.openstreetmap.org/copyright">stessa
                 licenza dei dati OpenStreetMap</a>.</p>
@@ -221,7 +230,7 @@ pages:
                 di OSM</a>.</p> <h3>Codice</h3> <p>Tutto il software che sta
                 dietro i siti taginfo è Open Source. Puoi ottenerlo sul sito <a
                 class="extlink"
-                href="https://github.com/joto/taginfo/">GitHub</a>. Per
+                href="https://github.com/taginfo/taginfo/">GitHub</a>. Per
                 informazioni introduttive consulta la pagina sull'<a
                 class="extlink"
                 href="//wiki.openstreetmap.org/wiki/Taginfo/Architecture">architettura
@@ -236,7 +245,7 @@ pages:
                 di nuove funzioni</h3> <p>Le segnalazioni di bug e le richieste
                 di nuove funzioni devono essere fatte direttamente nel<a
                 class="extlink"
-                href="https://github.com/joto/taginfo/issues">GitHub issue
+                href="https://github.com/taginfo/taginfo/issues">GitHub issue
                 tracker</a>. In alternativa puoi discutere la cosa nella
                 mailing list.</p> <h3>Contatti/Mailing list</h3> <p>Potete
                 contattarci nella <a class="extlink"
@@ -255,7 +264,7 @@ pages:
             db: |
                 <p>Le statistiche sulle chiavi, tag e sui tipi di relazioni
                 sono generate dal <a class="extlink"
-                href="http://planet.openstreetmap.org/">database OSM</a> (o da
+                href="https://planet.openstreetmap.org/">database OSM</a> (o da
                 un suo estratto) e dalla stesse fonte provengono le mappe che
                 mostrano la distribuzione geografica dei nodi e dei percorsi
                 (way).</p>
@@ -268,7 +277,7 @@ pages:
             languages: |
                 <p>Taginfo prende le informazioni sulle varie lingue del mondo,
                 i loro codici, nomi, etc. da diversi registri <a
-                class="extlink" href="http://www.iana.org/">IANA</a> and <a
+                class="extlink" href="https://www.iana.org/">IANA</a> and <a
                 class="extlink" href="http://www.unicode.org/">Unicode</a>.</p>
             projects: |
                 <p>Progetti che usano i tag di OSM in qualche modo, come
@@ -285,7 +294,7 @@ pages:
         intro: |
             <p>Qui potete scaricare il database usato da Taginfo. Tutti i dati
             sono memorizzati in un database <a class="extlink"
-            href="http://www.sqlite.org/">Sqlite</a>. I file del database sono
+            href="https://www.sqlite.org/">Sqlite</a>. I file del database sono
             poi compressi con <a class="extlink"
             href="http://www.bzip.org/">bzip2</a>.</p> <p>Se non volete
             scaricare questi database, ma avete bisogno di avere un accesso
@@ -295,7 +304,7 @@ pages:
         packed: Compressi
         unpacked: Decompressi
         description: Descrizione
-        note: Alcuni indici non sono presenti nel database disponibile qui per il download. La dimensione 'compressa' è la dimensione senza questi indici, la dimensione 'decompressa' include gli indici che probabilmente vorrai creare dopo ildownload.
+        note: Alcuni indici non sono presenti nel database disponibile qui per il download. La dimensione 'compressa' è la dimensione senza questi indici, la dimensione 'decompressa' include gli indici che probabilmente vorrai creare dopo il download.
     reports:
         intro: |
             I Reports mostrano i dati da prospettive differenti. Spesso
@@ -395,14 +404,14 @@ pages:
             other: Altri tag
             to_count_tooltip: Numero degli oggetti con questo tag che hanno anche l'altro tag o chiave.
             other_key_tooltip: Tags o chiave utilizzata assieme a questo tag.
-            from_count_tooltip: Numero di oggetti con l'altro tag o chiave cha hanno anche questo tag.
+            from_count_tooltip: Numero di oggetti con l'altro tag o chiave che hanno anche questo tag.
         combinations:
             title: Combinazioni
             description: Questa tabella mostra solo le combinazioni più comuni dei tag più comuni.
         geographic_distribution:
             title: Distribuzione geografica di questo tag
             relations: Le relazioni non hanno una localizzazione geografica, pertanto una mappa non può essere mostrata.
-            no_map: Spiacenti. La mappa può essere creata solo per i tag più frquenti. Potete provare ad utilizzare il collegamento a overpass turbo.
+            no_map: Spiacenti. La mappa può essere creata solo per i tag più frequenti. Potete provare ad utilizzare il collegamento a overpass turbo.
         wiki_pages:
             title: Pagine wiki su questo tag
             none_found: Non ci sono pagine wiki disponibili per questo tag.
@@ -686,11 +695,11 @@ reports:
                 region: Regione
                 variant: Variante
             intro: |
-                <p>Lo <a href="http://www.ietf.org/">IETF</a> definisce i
+                <p>Lo <a href="https://www.ietf.org/">IETF</a> definisce i
                 <i>tag delle lingue</i> in un suo standard <a
-                href="http://tools.ietf.org/html/bcp47">Tags for Identifying
+                href="https://tools.ietf.org/html/bcp47">Tags for Identifying
                 Languages (BCP47)</a>. I tag delle lingue consistono in uno o
-                più <i>sotto-tag</i> cje descrivono le lingua, gli script, le
+                più <i>sotto-tag</i> che descrivono le lingua, gli script, le
                 varianti, ecc. La lista seguente mostrai sotto-tag attualmente
                 registrati che sono rilevanti per OSM. Per maggiori
                 informazioni vedi anche la <a
@@ -705,11 +714,11 @@ reports:
     similar_keys:
         name: Chiavi simili
         intro: |
-            Questo rappoeto mostra le chiavi utilizzate frequentemente e le
+            Questo rapporto mostra le chiavi utilizzate frequentemente e le
             chiavi simili utilizzate molto raramente. Ciò dovrebbe evidenziare
             molti degli errori di scrittura delle chiavi più comuni, ma non è
             perfetto. Prestate attenzione quando correggete i dati! NON
-            modificate semplicemnte in modo meccanico queste chiavi con un
+            modificate semplicemente in modo meccanico queste chiavi con un
             cerca e sostituisci. Guardate e controllate ogni caso in modo
             individuale e risolvete anche gli altri problemi che trovate.
         key_common: Chiavi usate frequentemente
@@ -733,7 +742,7 @@ reports:
     wiki_images:
         name: Immagini wiki
         intro: |
-            Le imamgini utilizzati nel sito wiki come simbolo per le chiavi in
+            Le immagini utilizzate nel sito wiki come simbolo per le chiavi in
             diverse lingue. A volte c'è un'immagine in una delle varie lingue
             che è la migliore. Tuttavia in alcuni casi ha senso avere diverse
             immagini a causa del diverso background culturale o simili motivi.

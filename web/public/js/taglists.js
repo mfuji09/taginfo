@@ -61,13 +61,14 @@ var taginfo_taglist = (function(){
 
     function column_name(lang, column) {
         var names = {
-            'en': {
-                'key': 'Key',
-                'value': 'Value',
-                'element': 'Element',
-                'description': 'Description',
-                'image': 'Image',
-                'count': 'Count'
+            'cs': {
+                'key': 'Klíč',
+                'value': 'Hodnota',
+                'element': 'Prvek',
+                'description': 'Popis',
+                'image': 'Ilustrace',
+                'osmcarto_rendering': 'Ikona',
+                'count': 'Počet'
             },
             'de': {
                 'key': 'Key',
@@ -75,7 +76,125 @@ var taginfo_taglist = (function(){
                 'element': 'Element',
                 'description': 'Beschreibung',
                 'image': 'Bild',
+                'osmcarto_rendering': 'Kartendarstellung',
                 'count': 'Anzahl'
+            },
+            'en': {
+                'key': 'Key',
+                'value': 'Value',
+                'element': 'Element',
+                'description': 'Description',
+                'image': 'Image',
+                'osmcarto_rendering': 'Map rendering',
+                'count': 'Count'
+            },
+            'eo': {
+                'key': 'Ŝlosilo',
+                'value': 'Valoro',
+                'element': 'Objekto',
+                'description': 'Priskribo',
+                'image': 'Bildo',
+                'osmcarto_rendering': 'Piktogramo',
+                'count': 'Nombro'
+            },
+            'es': {
+                'key': 'Clave',
+                'value': 'Valor',
+                'element': 'Tipo',
+                'description': 'Descripción',
+                'image': 'Imagen',
+                'osmcarto_rendering': 'Ícono',
+                'count': 'Recuento'
+            },
+            'fr': {
+                'key': 'Clé',
+                'value': 'Valeur',
+                'element': '',
+                'description': 'Description',
+                'image': 'Image',
+                'osmcarto_rendering': 'Icône',
+                'count': 'Count'
+            },
+            'hu': {
+                'key': 'Kulcs',
+                'value': 'Érték',
+                'element': 'Típus',
+                'description': 'Leírás',
+                'image': 'Kép',
+                'osmcarto_rendering': 'Ikon',
+                'count': 'Darab'
+            },
+            'it': {
+                'key': 'Chiave',
+                'value': 'Valore',
+                'element': 'Tipo Oggetto',
+                'description': 'Descrizione',
+                'image': 'Immagine',
+                'osmcarto_rendering': 'Icona',
+                'count': 'Conteggio'
+            },
+            'ja': {
+                'key': 'キー',
+                'value': '値',
+                'element': '種別',
+                'description': '説明',
+                'image': '画像',
+                'osmcarto_rendering': 'アイコン',
+                'count': '件数'
+            },
+            'pl': {
+                'key': 'Klucz',
+                'value': 'Wartość',
+                'element': 'Rodzaj',
+                'description': 'Opis',
+                'image': 'Obraz',
+                'osmcarto_rendering': 'Ikona',
+                'count': 'Liczba'
+            },
+            'pt': {
+                'key': 'Chave',
+                'value': 'Valor',
+                'element': 'Tipo',
+                'description': 'Descrição',
+                'image': 'Imagem',
+                'osmcarto_rendering': 'Ícone',
+                'count': 'Contagem'
+            },
+            'ru': {
+                'key': 'Ключ',
+                'value': 'Значение',
+                'element': 'Тип',
+                'description': 'Описание',
+                'image': 'Изображение',
+                'osmcarto_rendering': 'Значок',
+                'count': 'Количество'
+            },
+            'uk': {
+                'key': 'Ключ',
+                'value': 'Значення',
+                'element': 'Тип',
+                'description': 'Опис',
+                'image': 'Зображення',
+                'osmcarto_rendering': 'Значок',
+                'count': 'Кількість'
+            },
+            'vi': {
+                'key': 'Chìa khóa',
+                'value': 'Giá trị',
+                'element': 'Kiểu',
+                'description': 'Miêu tả',
+                'image': 'Hình ảnh',
+                'osmcarto_rendering': 'Hình tượng',
+                'count': 'Tổng số'
+            },
+            'zh-TW': {
+                'key': '鍵',
+                'value': '值',
+                'element': '類型',
+                'description': '描述',
+                'image': '圖片',
+                'osmcarto_rendering': '圖示',
+                'count': '計數'
             }
         };
 
@@ -98,6 +217,9 @@ var taginfo_taglist = (function(){
             return wiki_key_link(get_lang(data, lang), data.key);
         },
         'value': function(lang, data) {
+            if (data.value === null) {
+                return '';
+            }
             return wiki_tag_link(get_lang(data, lang), data.key, data.value);
         },
         'element': function(lang, data) {
@@ -127,10 +249,31 @@ var taginfo_taglist = (function(){
             }
             return "";
         },
+        'osmcarto_rendering': function(lang, data) {
+            if (data.wiki) {
+                var d = data.wiki[lang] || data.wiki['en'];
+                if (d && d.osmcarto_rendering) {
+                    return link_to_noescape(url_for_wiki(d.osmcarto_rendering.image),
+                                            '<img style="max-width: 120px; max-height: 120px;" src="' +
+                                            d.osmcarto_rendering.thumb_url_prefix +
+                                            d.osmcarto_rendering.width +
+                                            d.osmcarto_rendering.thumb_url_suffix +
+                                            '" width="' +
+                                            d.osmcarto_rendering.width +
+                                            '" height="' +
+                                            d.osmcarto_rendering.height +
+                                            '"/>');
+                }
+            }
+            return "";
+        },
         'count': function(lang, data) {
             return ['node', 'way', 'relation'].map(function(type) {
-                return type_image(type) + data['count_' + type + 's'];
-            }).join('<br/>');
+                var value = data['count_' + type + 's'].toString().
+                            replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1&#x202f;');
+                return '<div style="text-align: right">' +
+                       value + ' ' + type_image(type) + '</div>';
+            }).join('');
         }
     };
 
@@ -139,13 +282,19 @@ var taginfo_taglist = (function(){
     function tr(content) { return '<tr>' + content + '</tr>'; }
 
     function create_table(data, options) {
-        var columns = ['key', 'value', 'element', 'description', 'image'];
+        var columns = ['key', 'value', 'element', 'description'];
+
+        if (options.with_rendering) {
+            columns.push('osmcarto_rendering');
+        }
+
+        columns.push('image');
 
         if (options.with_count) {
             columns.push('count');
         }
 
-        return '<table class="taginfo-taglist"><thead><tr>' +
+        return '<table class="wikitable taginfo-taglist"><thead><tr>' +
             columns.map(function(column) {
                 return th(column_name(options.lang, column));
             }).join('') + '</tr></thead><tbody>' +
@@ -171,6 +320,7 @@ var taginfo_taglist = (function(){
 
         jQuery.getJSON(url, function(json) {
             element.html(create_table(json.data, options));
+            jQuery("td a img", element).parent().parent().css("text-align", "center");
         });
     }
 

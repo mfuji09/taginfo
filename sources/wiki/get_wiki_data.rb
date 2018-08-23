@@ -19,7 +19,7 @@
 #
 #------------------------------------------------------------------------------
 #
-#  Copyright (C) 2013-2015  Jochen Topf <jochen@topf.org>
+#  Copyright (C) 2013-2017  Jochen Topf <jochen@topf.org>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ PAGE_TITLE_FORMAT = %r{^([-_:.,= ()]|[[:alnum:]])+$}
 IMAGE_TITLE_FORMAT = %r{^(file|image):(.*)$}i
 
 # Language code format (something link 'en', or 'en_GB')
-LANGUAGE_CODE = %r{^[a-z][a-z](_[a-z]+)?$}i
+LANGUAGE_CODE = %r{^[a-z]{2}(-[a-z0-9]+)?$}i
 
 CONTAINS_SLASH = %r{/}
 
@@ -73,7 +73,9 @@ class WikiPage
     @@pages = {}
 
     attr_accessor :content
-    attr_reader :type, :timestamp, :namespace, :title, :description, :image,
+    attr_reader :type, :timestamp, :namespace, :title,
+                :redirect_target, :description,
+                :image, :osmcarto_rendering,
                 :tag, :key, :value, :lang, :ttype,
                 :tags_implies, :tags_combination, :tags_linked,
                 :parsed, :has_templ, :group,
@@ -103,9 +105,27 @@ class WikiPage
         @@pages[@title] = self
     end
 
+    def parse_title(title)
+        tag       = title.gsub(/^([^:]+:)?(Key|Tag):/, '') # complete tag (key=value)
+        key       = tag.sub(/=.*/, '')                     # key
+        if tag =~ /=/
+            value = tag.sub(/.*?=/, '')                    # value (if any)
+        else
+            value = nil
+        end
+        if title =~ /^(.*):(Key|Tag):/
+            lang  = $1.downcase                            # IETF language tag
+            ttype = $2.downcase                            # 'tag' or 'key'
+        else
+            lang  = 'en'
+        end
+
+        [lang, tag, key, value, ttype]
+    end
+
     # Has this wiki page a name that we can understand and process?
     def check_title
-        return :wrong_lang_format     if @lang  !~ /^[a-z]{2}(-[a-z0-9-]+)?$/
+        return :wrong_lang_format     unless LANGUAGE_CODE.match(@lang)
         return :lang_is_en            if @title =~ /^en:/i
         return :value_in_key_page     if defined?(@ttype) && @ttype == 'key' && ! @value.nil?
         return :no_value_for_tag_page if defined?(@ttype) && @ttype == 'tag' &&   @value.nil?
@@ -123,9 +143,25 @@ class WikiPage
         @tags_linked << tag
     end
 
+    def parse_content_redirect(db)
+        puts "Parsing redirect page '#{title}'"
+        m = /^#REDIRECT *\[\[(.*)\]\]$/i.match(@content)
+        if m.nil?
+            puts "  Can not find redirect target for '#{title}'"
+            db.execute("INSERT INTO problems (location, reason, title, lang, key, value) VALUES ('redirect page content', 'parsing failed', ?, ?, ?, ?)", [title, lang, key, value])
+        else
+            puts "  Redirect to '#{m[1]}'"
+            @redirect_target = m[1]
+            if title =~ /(^|:)(Key|Tag):/
+                (to_lang, to_tag, to_key, to_value, to_ttype) = parse_title(@redirect_target)
+            end
+            db.execute("INSERT INTO redirects (from_title, from_lang, from_key, from_value, to_title, to_lang, to_key, to_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [title, lang, key, value, @redirect_target, to_lang, to_key, to_value])
+        end
+    end
+
     # Parse content of the wiki page. This will find the templates
     # and their parameters.
-    def parse_content(db)
+    def parse_content_page(db)
         @parsed = true
         text = @content.gsub(HTML_COMMENT, '')
 
@@ -188,6 +224,22 @@ class WikiPage
         end
     end
 
+    def set_osmcarto_rendering(ititle, db)
+        @osmcarto_rendering = ''
+        if ititle.nil?
+            puts "ERROR: invalid osmcarto-rendering: page='#{title}' image=nil"
+            db.execute("INSERT INTO problems (location, reason, title, lang, key, value) VALUES ('Template:Key/Value/RelationDescription', 'osmcarto-rendering parameter empty', ?, ?, ?, ?)", [title, lang, key, value])
+        elsif IMAGE_TITLE_FORMAT.match(ititle)
+            @osmcarto_rendering = "File:#{$2}"
+            if ! PAGE_TITLE_FORMAT.match(ititle)
+                puts "WARN: possible invalid character in osmcarto-rendering image title: page='#{title}' image='#{ititle}'"
+            end
+        else
+            puts "ERROR: invalid osmcarto-rendering: page='#{title}' image='#{ititle}'"
+            db.execute("INSERT INTO problems (location, reason, title, lang, key, value, info) VALUES ('Template:Key/Value/RelationDescription', 'invalid osmcarto-rendering parameter', ?, ?, ?, ?, ?)", [title, lang, key, value, ititle])
+        end
+    end
+
     def parse_type(param_name, param, db)
         if param.is_a?(Array)
             if param.size > 1
@@ -246,8 +298,11 @@ class WikiPage
     def parse_template_wikipedia(template, level, db)
         lang = template.parameters[0]
         title = template.parameters[1]
+        if lang == ''
+            lang = 'en'
+        end
         puts "#{ "  " * level }Wikipedia link: lang='#{lang}' title='#{title}'"
-        if LANGUAGE_CODE.match(lang)
+        if lang == 'commons' || LANGUAGE_CODE.match(lang)
             if defined?(@key)
                 db.execute("INSERT INTO tag_page_wikipedia_links (key, value, lang, title) VALUES (?, ?, ?, ?)", [@key, @value, lang, title])
             elsif defined?(@rtype)
@@ -286,6 +341,12 @@ class WikiPage
             img = template.named_parameters['image'][0]
             if img.class != Template
                 set_image(img, db)
+            end
+        end
+        if template.named_parameters['osmcarto-rendering']
+            img = template.named_parameters['osmcarto-rendering'][0]
+            if img.class != Template
+                set_osmcarto_rendering(img, db)
             end
         end
         if template.named_parameters['group']
@@ -358,19 +419,7 @@ class KeyOrTagPage < WikiPage
     def initialize(type, timestamp, namespace, title)
         super(type, timestamp, namespace, title)
 
-        @tag       = title.gsub(/^([^:]+:)?(Key|Tag):/, '') # complete tag (key=value)
-        @key       = @tag.sub(/=.*/, '')                    # key
-        if @tag =~ /=/
-            @value = @tag.sub(/.*?=/, '')                   # value (if any)
-        else
-            @value = nil
-        end
-        if title =~ /^(.*):(Key|Tag):/
-            @lang  = $1.downcase                            # IETF language tag
-            @ttype = $2.downcase                            # 'tag' or 'key'
-        else
-            @lang  = 'en'
-        end
+        (@lang, @tag, @key, @value, @ttype) = parse_title(title)
 
         @tags_implies     = []
         @tags_combination = []
@@ -382,7 +431,7 @@ class KeyOrTagPage < WikiPage
 
     def insert(db)
         db.execute(
-            "INSERT INTO wikipages (lang, tag, key, value, title, body, tgroup, type, has_templ, parsed, description, image, on_node, on_way, on_area, on_relation, tags_implies, tags_combination, tags_linked, status, statuslink, wikidata) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
+            "INSERT INTO wikipages (lang, tag, key, value, title, body, tgroup, type, has_templ, parsed, redirect_target, description, image, osmcarto_rendering, on_node, on_way, on_area, on_relation, tags_implies, tags_combination, tags_linked, status, statuslink, wikidata) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
             lang,
             tag,
             key,
@@ -393,8 +442,10 @@ class KeyOrTagPage < WikiPage
             type,
             has_templ  ? 1 : 0,
             parsed     ? 1 : 0,
+            redirect_target,
             description,
             image,
+            osmcarto_rendering,
             onNode     ? 1 : 0,
             onWay      ? 1 : 0,
             onArea     ? 1 : 0,
@@ -435,7 +486,7 @@ class RelationPage < WikiPage
 
     def insert(db)
         db.execute(
-            "INSERT INTO relation_pages (lang, rtype, title, body, tgroup, type, has_templ, parsed, description, image, tags_linked) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
+            "INSERT INTO relation_pages (lang, rtype, title, body, tgroup, type, has_templ, parsed, redirect_target, description, image, osmcarto_rendering, tags_linked) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
             lang,
             rtype,
             title,
@@ -444,8 +495,10 @@ class RelationPage < WikiPage
             type,
             has_templ  ? 1 : 0,
             parsed     ? 1 : 0,
+            redirect_target,
             description,
             image,
+            osmcarto_rendering,
             tags_linked.sort.uniq.join(',')
         ])
     end
@@ -578,7 +631,11 @@ database.transaction do |db|
             reason = page.check_title
             if reason == :ok
                 cache.get_page(page)
-                page.parse_content(db)
+                if page.type == 'redirect'
+                    page.parse_content_redirect(db)
+                else
+                    page.parse_content_page(db)
+                end
                 page.insert(db)
             else
                 puts "ERROR: invalid page: #{reason} #{page.title}"

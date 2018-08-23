@@ -39,7 +39,8 @@ $ sudo apt-get install ruby-passenger libapache2-mod-passenger
 
 Install the Gems:
 ```sh
-$ sudo gem install rack rack-contrib sinatra sinatra-r18n json
+$ sudo gem install bundler
+$ sudo bundle install
 ```
 
 ## Data Import
@@ -78,7 +79,7 @@ All the Javascript and CSS needed is already included.
 
 ## Thanks
 
-To the [many people](https://github.com/joto/taginfo/graphs/contributors)
+To the [many people](https://github.com/taginfo/taginfo/graphs/contributors)
 helping with bug reports, code and translations.
 
 

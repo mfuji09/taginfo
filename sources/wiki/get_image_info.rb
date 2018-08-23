@@ -17,7 +17,7 @@
 #
 #------------------------------------------------------------------------------
 #
-#  Copyright (C) 2013-2015  Jochen Topf <jochen@topf.org>
+#  Copyright (C) 2013-2017  Jochen Topf <jochen@topf.org>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -53,9 +53,11 @@ database.results_as_hash = true
 
 api = MediaWikiAPI::API.new
 
-image_titles = database.execute("SELECT DISTINCT(image) AS title FROM wikipages WHERE image IS NOT NULL AND image != '' UNION SELECT DISTINCT(image) AS title FROM relation_pages WHERE image IS NOT NULL AND image != ''").
+image_titles = database.execute("SELECT DISTINCT(image) AS title FROM wikipages WHERE image IS NOT NULL AND image != '' UNION SELECT DISTINCT(osmcarto_rendering) AS title FROM wikipages WHERE osmcarto_rendering IS NOT NULL AND osmcarto_rendering != '' UNION SELECT DISTINCT(image) AS title FROM relation_pages WHERE image IS NOT NULL AND image != ''").
                     map{ |row| row['title'] }.
-                    select{ |title| title.match(%r{^(file|image):}i) }
+                    select{ |title| title.match(%r{^(file|image):}i) }.
+                    sort.
+                    uniq
 
 database.transaction do |db|
     puts "Found #{ image_titles.size } different image titles"

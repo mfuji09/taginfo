@@ -171,8 +171,9 @@ pages:
             title: Про цей сайт
         building_on_taginfo:
             title: Використання taginfo
-            text: |
+            pre: |
                 <p>You can use the data from taginfo in your own projects:</p>
+            api: |
                 <h3>API</h3>
                 <p>Дані Taginfo можна отримати через REST API. Див
                 <a href="/taginfo/apidoc">документацію по API</a> для подробиць, загальна інформація є
@@ -180,12 +181,14 @@ pages:
                 Сервера, на яких працює API taginfo мають обмежені ресурси.
                 Будь ласка, використовуйте API відповідально. Якщо маєте сумніви, зв'яжіться з людьми, які підтримують
                 сайт, або з нами через список розсилки.</p>
+            download: |
                 <h3>Завантаження</h3>
                 <p>Якщо ви хочете погратись з даними, що використовуються taginfo, ви можете завантажити
                 регулярно файли бази даних Sqlite, які регулярно оновлюються. Весь препроцесінг зроблений для вас.
                 Див. <a href="/download">сторінку завантажень</a> для списку файлів. Пам’ятайте, що 
                 деякі з цих файлів можуть бути доволі великими. Якщо ви хочете завантажувати їх регулярно,
                 зв'яжіться з людьми, які підтримують сайт, або з нами через список розсилки.</p>
+            license: |
                 <h3>Ліцензія</h3>
                 <p>Дані, доступні через taginfo, розповсюджуються під ODbL,
                 <a class="extlink" href="//www.openstreetmap.org/copyright">такою
@@ -204,7 +207,7 @@ pages:
                 <a class="extlink" href="//wiki.openstreetmap.org/wiki/Taginfo/I18N">OSM вікі</a>.</p>
                 <h3>Код</h3>
                 <p>Усе ПЗ сайтів taginfo є Open Source. Ви можете знайти його на
-                <a class="extlink" href="https://github.com/joto/taginfo/">GitHub</a>. Для огляду
+                <a class="extlink" href="https://github.com/taginfo/taginfo/">GitHub</a>. Для огляду
                 дивіться сторінку про <a class="extlink"
                 href="//wiki.openstreetmap.org/wiki/Taginfo/Architecture">архітектуру
                 taginfo</a> на OSM вікі.</p>
@@ -216,7 +219,7 @@ pages:
                 вікі</a>.</p>
                 <h3>Повідомлення про помилки та пропозиції</h3>
                 <p>Повідомлення про помилки та пропозиції направляйте на <a class="extlink"
-                href="https://github.com/joto/taginfo/issues">GitHub</a>. Або ви можете
+                href="https://github.com/taginfo/taginfo/issues">GitHub</a>. Або ви можете
                 зв'язатись з нами через список розсилки.</p>
                 <h3>Контакти/Список розсилки</h3>
                 <p>Зв'яжіться з нами через
@@ -233,11 +236,11 @@ pages:
             intro: Тут розміщений список джерел, що зараз використовуються. У майбутньому може бути вбудовано більше джерел.
         description:
             db: |
-                <p>Статистика про ключі, теґи та типи зв'язків генерується з <a class="extlink" href="http://planet.openstreetmap.org/">бази даних OSM</a>, так само як і карти, які показують географічний розподіл точок та ліній.</p>
+                <p>Статистика про ключі, теґи та типи зв'язків генерується з <a class="extlink" href="https://planet.openstreetmap.org/">бази даних OSM</a>, так само як і карти, які показують географічний розподіл точок та ліній.</p>
             wiki: |
                 <p><a class="extlink" href="//wiki.openstreetmap.org/">OSM Вікі</a> читається та аналізуються всі сторінки Key:*, Tag:*, and Relation:* (всіма мовами). Описи, картинки, пов'язані теґи тощо отримуються звідти.</p>
             languages: |
-                <p>Taginfo отримує інформацію про різні мови світу, їх коди, назви тощо з деяких <a class="extlink" href="http://www.iana.org/">IANA</a> та <a class="extlink" href="http://www.unicode.org/">Unicode</a> регістрів.</p>
+                <p>Taginfo отримує інформацію про різні мови світу, їх коди, назви тощо з деяких <a class="extlink" href="https://www.iana.org/">IANA</a> та <a class="extlink" href="http://www.unicode.org/">Unicode</a> регістрів.</p>
             projects: |
                 <p>Проекти, які використовують теґи OSM, наприклад, редактори, мапи, роутери тощо. Див. <a href="/projects">список проектів</a>.</p>
         updates:
@@ -251,7 +254,7 @@ pages:
         intro: |
             <p>Тут можна звантажити бази даних, які використовує Taginfo.  Усі дані зберігаються
             у форматі <a class="extlink"
-            href="http://www.sqlite.org/">Sqlite</a>. Потім файли баз даних стиснуті
+            href="https://www.sqlite.org/">Sqlite</a>. Потім файли баз даних стиснуті
             <a class="extlink" href="http://www.bzip.org/">bzip2</a>.</p>
             <p>Якщо Вам не потрібні ці файли, а потрібен автоматизований доступ до даних,
             скористайтеся <a href="/about">API</a>.</p>
@@ -614,12 +617,12 @@ reports:
                 region: Регіон
                 variant: Діалект
             intro: |
-                <p><a href="http://www.ietf.org/">Інженерна рада Інтернету (IETF)</a> визначає <i>мовні
-                теґи</i> за своїм стандартом <a href="http://tools.ietf.org/html/bcp47">BCP47</a>. Мовні
+                <p><a href="https://www.ietf.org/">Інженерна рада Інтернету (IETF)</a> визначає <i>мовні
+                теґи</i> за своїм стандартом <a href="https://tools.ietf.org/html/bcp47">BCP47</a>. Мовні
                 теґи містять один або більше <i>підтеґів</i>, що описують мову,
                 писемність, діалект та інше. Наступний список відображає підтеґи,
                 що в даний момент враховуються і відносяться до OSM. Для більш детальної інформації див. також
-                <a href="http://en.wikipedia.org/wiki/IETF_language_tag">статтю у Вікіпедії
+                <a href="https://en.wikipedia.org/wiki/IETF_language_tag">статтю у Вікіпедії
                 про реєстр мовних теґів IETF (англ.)</a> та сайт <a
                 href="http://www.langtag.net/">langtag.net</a>.</p>
                 <p>Врахуйте, що дані в таблиці взяті <b>не</b> з OpenStreetMap,

@@ -1,10 +1,10 @@
-<div class="pre ui-helper-clearfix">
+<div class="pre ui-helper-clearfix" lang="en" dir="ltr">
     <div id="pre-text">
         <h1>taginfo META</h1>
         <p>This section is for developers only.</p>
     </div>
 </div>
-<div class="box resize">
+<div class="box resize" lang="en" dir="ltr">
     <h2>Menu</h2>
     <ul>
         <li><a href="/taginfo/apidoc"><%= t.taginfo.apidoc %></a></li>
@@ -12,9 +12,10 @@
         <li><a href="/taginfo/i18n">Translated Texts</a></li>
         <li><a href="/taginfo/config">Configuration</a></li>
         <li><a href="/taginfo/projects">Projects</a></li>
+        <li><a href="/taginfo/wiki-problems">Problems encountered when parsing wiki</a></li>
     </ul>
     <h2>Software Version</h2>
-    <p><%= @commit_date %> (<a href="https://github.com/joto/taginfo/commit/<%= @commit %>"><%= @commit[0, 10] %></a>)</p>
+    <p><%= @commit_date %> (<a href="https://github.com/taginfo/taginfo/commit/<%= @commit %>"><%= @commit[0, 10] %></a>)</p>
     <h2>Config Settings</h2>
     <table class="list">
         <tr><th class="tl">Variable</th><th class="tl">Setting</th></tr>

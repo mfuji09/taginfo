@@ -196,6 +196,8 @@ class Taginfo < Sinatra::Base
             [:count,       :INT,    'Number of times this key/value is in the OSM database.'],
             [:fraction,    :FLOAT,  'Number of times in relation to number of times this key is in the OSM database.'],
             [:in_wiki,     :BOOL,   'Is there at least one wiki page for this tag.'],
+            [:desclang,    :STRING, 'Language the description of the tag is in.'],
+            [:descdir,     :STRING, 'Writing direction ("ltr", "rtl", or "auto") of description of the tag.'],
             [:description, :STRING, 'Description of the tag from the wiki.']
         ]),
         :example => { :key => 'highway', :page => 1, :rp => 10, :sortname => 'count_ways', :sortorder => 'desc' },
@@ -251,18 +253,20 @@ class Taginfo < Sinatra::Base
                     condition('key = ?', key).
                     condition("value IN (#{ values_with_wiki_page })").
                     execute().each do |row|
-                    wikidesc[row['value']] = row['description']
+                    wikidesc[row['value']] = [row['description'], lang, direction_from_lang_code(lang)]
                 end
             end
         end
 
         return generate_json_result(total,
             res.map{ |row| {
-                :value    => row['value'],
-                :count    => row['count_' + filter_type].to_i,
-                :fraction => (row['count_' + filter_type].to_f / this_key_count.to_f).round(4),
-                :in_wiki  => row['in_wiki'] != 0,
-                :description => wikidesc[row['value']] || ''
+                :value       => row['value'],
+                :count       => row['count_' + filter_type].to_i,
+                :fraction    => (row['count_' + filter_type].to_f / this_key_count.to_f).round(4),
+                :in_wiki     => row['in_wiki'] != 0,
+                :description => wikidesc[row['value']] ? wikidesc[row['value']][0] : '',
+                :desclang    => wikidesc[row['value']] ? wikidesc[row['value']][1] : '',
+                :descdir     => wikidesc[row['value']] ? wikidesc[row['value']][2] : ''
             } }
         )
     end
@@ -273,6 +277,7 @@ class Taginfo < Sinatra::Base
         :paging => :no,
         :result => no_paging_results([
             [:lang,             :STRING, 'Language code.'],
+            [:dir,              :STRING, 'Writing direction ("ltr", "rtl", or "auto") of description.'],
             [:language,         :STRING, 'Language name in its language.'],
             [:language_en,      :STRING, 'Language name in English.'],
             [:title,            :STRING, 'Wiki page title.'],
@@ -309,7 +314,7 @@ class Taginfo < Sinatra::Base
         :description => 'Get projects using a given key.',
         :parameters => {
             :key => 'Tag key (required).',
-            :query => 'Only show results where the value matches this query (substring match, optional).'
+            :query => 'Only show results where the project name or tag value matches this query (substring match, optional).'
         },
         :paging => :optional,
         :filter => {

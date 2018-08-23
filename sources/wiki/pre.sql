@@ -9,45 +9,49 @@ INSERT INTO source (id, name, update_start, data_until) SELECT 'wiki', 'Wiki', d
 DROP TABLE IF EXISTS wikipages;
 
 CREATE TABLE wikipages (
-    lang             TEXT,
-    tag              TEXT,
-    key              TEXT,
-    value            TEXT,
-    title            TEXT,
-    body             TEXT,
-    tgroup           TEXT,
-    type             TEXT,
-    has_templ        INTEGER,
-    parsed           INTEGER,
-    description      TEXT,
-    image            TEXT,
-    on_node          INTEGER,
-    on_way           INTEGER,
-    on_area          INTEGER,
-    on_relation      INTEGER,
-    tags_implies     TEXT,
-    tags_combination TEXT,
-    tags_linked      TEXT,
-    status           TEXT,
-    statuslink       TEXT,
-    wikidata         TEXT
+    lang               TEXT,
+    tag                TEXT,
+    key                TEXT,
+    value              TEXT,
+    title              TEXT,
+    body               TEXT,
+    tgroup             TEXT,
+    type               TEXT,
+    has_templ          INTEGER,
+    parsed             INTEGER,
+    redirect_target    TEXT,
+    description        TEXT,
+    image              TEXT,
+    osmcarto_rendering TEXT,
+    on_node            INTEGER,
+    on_way             INTEGER,
+    on_area            INTEGER,
+    on_relation        INTEGER,
+    tags_implies       TEXT,
+    tags_combination   TEXT,
+    tags_linked        TEXT,
+    status             TEXT,
+    statuslink         TEXT,
+    wikidata           TEXT
 );
 
 DROP TABLE IF EXISTS relation_pages;
 
 CREATE TABLE relation_pages (
-    lang             TEXT,
-    rtype            TEXT,
-    title            TEXT,
-    body             TEXT,
-    tgroup           TEXT,
-    type             TEXT,
-    has_templ        INTEGER,
-    parsed           INTEGER,
-    description      TEXT,
-    image            TEXT,
-    tags_linked      TEXT,
-    status           TEXT
+    lang               TEXT,
+    rtype              TEXT,
+    title              TEXT,
+    body               TEXT,
+    tgroup             TEXT,
+    type               TEXT,
+    has_templ          INTEGER,
+    parsed             INTEGER,
+    redirect_target    TEXT,
+    description        TEXT,
+    image              TEXT,
+    osmcarto_rendering TEXT,
+    tags_linked        TEXT,
+    status             TEXT
 );
 
 DROP TABLE IF EXISTS wiki_images;
@@ -153,5 +157,18 @@ CREATE TABLE words (
     key   TEXT,
     value TEXT,
     words TEXT
+);
+
+DROP TABLE IF EXISTS redirects;
+
+CREATE TABLE redirects (
+    from_title TEXT,
+    from_lang  TEXT,
+    from_key   TEXT,
+    from_value TEXT,
+    to_title   TEXT,
+    to_lang    TEXT,
+    to_key     TEXT,
+    to_value   TEXT
 );
 

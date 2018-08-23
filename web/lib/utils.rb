@@ -7,7 +7,7 @@ class Fixnum
 
     # convert to string with thin space as thousand separator
     def to_s_with_ts
-        self.to_s.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1&thinsp;")
+        self.to_s.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1&#x202f;")
     end
 
 end
@@ -202,6 +202,17 @@ end
 
 # ------------------------------------------------------------------------------
 
+# Get the printing direction of a language.
+def direction_from_lang_code(language_code)
+    r = R18n.locale(language_code)
+    if r.supported?
+        return r.ltr? ? 'ltr' : 'rtl'
+    end
+    return 'auto'
+end
+
+# ------------------------------------------------------------------------------
+
 # Get description for key/tag/relation from wiki page
 # Get it in given language or fall back to English if it isn't available
 def get_description(table, attr, lang, param, value)
@@ -218,9 +229,9 @@ def get_description(table, attr, lang, param, value)
         end
 
         desc = select.get_first_value()
-        return desc if desc
+        return [desc, lang, direction_from_lang_code(lang)] if desc
     end
-    return ''
+    return ['', '', 'auto']
 end
 
 def get_key_description(lang, key)
@@ -236,8 +247,8 @@ def get_relation_description(lang, rtype)
 end
 
 def wrap_description(translation, description)
-    if description != ''
-        return "<span title='#{ h(translation.description_from_wiki) }' tipsy='w'>#{ h(description) }</span>"
+    if description[0] != ''
+        return "<span lang='#{description[1]}' dir='#{description[2] ? 'ltr' : 'rtl'}' title='#{ h(translation.description_from_wiki) }' tipsy='#{r18n.locale.ltr? ? 'w' : 'e'}'>#{ h(description[0]) }</span>"
     else
         return "<span class='empty'>#{ h(translation.no_description_in_wiki) }</span>"
     end
@@ -248,8 +259,10 @@ end
 # Used in wiki api calls
 def get_wiki_result(res)
     return generate_json_result(res.size,
-        res.map{ |row| {
+        res.map{ |row|
+            {
             :lang             => row['lang'],
+            :dir              => direction_from_lang_code(row['lang']),
             :language         => ::Language[row['lang']].native_name,
             :language_en      => ::Language[row['lang']].english_name,
             :title            => row['title'],

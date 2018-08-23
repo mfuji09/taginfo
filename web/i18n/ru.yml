@@ -171,8 +171,9 @@ pages:
             title: Об этом сайте
         building_on_taginfo:
             title: Использование taginfo
-            text: |
+            pre: |
                 <p>Вы можете использовать данные из taginfo в ваших проектах:</p>
+            api: |
                 <h3>API</h3>
                 <p>Данные Taginfo могут быть получены через REST API. См.
                 <a href="/taginfo/apidoc">документацию по API</a> для подробностей, общие сведения есть
@@ -180,12 +181,14 @@ pages:
                 Сервера, на которых работает API taginfo, имеют ограниченные ресурсы.
                 Пожалуйста, используйте API ответственно. В случае сомнений свяжитесь с людьми, которые поддерживают сайт, который вы используете,
                 или свяжитесь с нами в списке рассылки.</p>
+            download: |
                 <h3>Загрузка</h3>
                 <p>Если вы хотите поиграться с данными, используя taginfo, вы можете загрузить
                 регулярно обновляемые файлы базы данных Sqlite. Весь препроцессинг сделан за вас.
                 См. <a href="/download">страницу загрузки</a> для списка файлов. Помните, что
                 некоторые из этих файлов могут быть довольно большими. Если вы хотите загружать их регулярно,
                 свяжитесь с людьми, которые поддерживают сайт, который вы используете, или свяжитесь с нами в списке рассылки.</p>
+            license: |
                 <h3>Лицензия</h3>
                 <p>Данные, доступные через taginfo, распространяются под ODbL,
                 <a class="extlink" href="//www.openstreetmap.org/copyright">такой же лицензией, как данные OpenStreetMap</a>.</p>
@@ -203,7 +206,7 @@ pages:
                 <a class="extlink" href="//wiki.openstreetmap.org/wiki/Taginfo/I18N">OSM вики</a>.</p>
                 <h3>Код</h3>
                 <p>Весь код сайта taginfo - Open Source. Вы можете найти его на
-                <a class="extlink" href="https://github.com/joto/taginfo/">GitHub</a>. Для обзора
+                <a class="extlink" href="https://github.com/taginfo/taginfo/">GitHub</a>. Для обзора
                 смотрите страницу о <a class="extlink"
                 href="//wiki.openstreetmap.org/wiki/Taginfo/Architecture"> архитектуре taginfo
                 </a> на OSM вики.</p>
@@ -215,7 +218,7 @@ pages:
                 вики</a>.</p>
                 <h3>Сообщения об ошибках и предложения</h3>
                 <p>Сообщения об ошибках и предложения направляйте на <a class="extlink"
-                href="https://github.com/joto/taginfo/issues">GitHub</a>. Также вы можете
+                href="https://github.com/taginfo/taginfo/issues">GitHub</a>. Также вы можете
                 связаться с нами в списке рассылки.</p>
                 <h3>Контакты/Список рассылки</h3>
                 <p>Свяжитесь с нами в
@@ -232,11 +235,11 @@ pages:
             intro: Здесь находится список используемых сейчас источников. В будущем может быть интегрировано больше источников.
         description:
             db: |
-                <p>Статистика о ключах, тегах и типах отношений генерируется из <a class="extlink" href="http://planet.openstreetmap.org/">базы данных OSM</a> (или её фрагментов), ровно как и карты, которые показывают географическое распределение точек и линий.</p>
+                <p>Статистика о ключах, тегах и типах отношений генерируется из <a class="extlink" href="https://planet.openstreetmap.org/">базы данных OSM</a> (или её фрагментов), ровно как и карты, которые показывают географическое распределение точек и линий.</p>
             wiki: |
                 <p><a class="extlink" href="//wiki.openstreetmap.org/">OSM Вики</a> читается и все Key:*, Tag:* и Relation:* страницы (на всех языках) анализируются. Описания, картинки, связанные теги и т. д. берутся оттуда.</p>
             languages: |
-                <p>Taginfo получает информацию о разных языках мира, их кодах, названиях и т. д. из разных регистров <a class="extlink" href="http://www.iana.org/">IANA</a> и <a class="extlink" href="http://www.unicode.org/">Unicode</a>.</p>
+                <p>Taginfo получает информацию о разных языках мира, их кодах, названиях и т. д. из разных регистров <a class="extlink" href="https://www.iana.org/">IANA</a> и <a class="extlink" href="http://www.unicode.org/">Unicode</a>.</p>
             projects: |
                 <p>Проекты, которые используют теги OSM, такие как редакторы, карты, роутеры и т. д. См. <a href="/projects">список проектов</a>.</p>
         updates:
@@ -250,7 +253,7 @@ pages:
         intro: |
             <p>Здесь можно скачать базы данных, используемые Taginfo. Все данные хранятся
             в формате <a class="extlink"
-            href="http://www.sqlite.org/">Sqlite</a>. Затем файлы баз данных сжаты
+            href="https://www.sqlite.org/">Sqlite</a>. Затем файлы баз данных сжаты
             <a class="extlink" href="http://www.bzip.org/">bzip2</a>.</p>
             <p>Если вам не нужны эти файлы, а требуется автоматизируемый доступ к данным,
             воспользуйтесь <a href="/about">API</a>.</p>
@@ -613,12 +616,12 @@ reports:
                 region: Регион
                 variant: Диалект
             intro: |
-                <p><a href="http://www.ietf.org/">Инженерный совет Интернета (IETF)</a> определяет <i>языковые
-                теги</i> по своему стандарту <a href="http://tools.ietf.org/html/bcp47">BCP47</a>. Языковые
+                <p><a href="https://www.ietf.org/">Инженерный совет Интернета (IETF)</a> определяет <i>языковые
+                теги</i> по своему стандарту <a href="https://tools.ietf.org/html/bcp47">BCP47</a>. Языковые
                 теги содержат один или более <i>субтегов</i>, описывающих язык,
                 письменность, диалект и прочее. Следующий список отображает субтеги,
                 в данный момент учитывающиеся и относящиеся к OSM. Для более детальной информации см. также
-                <a href="http://en.wikipedia.org/wiki/IETF_language_tag">статью в Википедии
+                <a href="https://en.wikipedia.org/wiki/IETF_language_tag">статью в Википедии
                 о регистре языковых тегов IETF (англ.)</a> и сайт <a
                 href="http://www.langtag.net/">langtag.net</a>.</p>
                 <p>Учтите, что данные в таблице взяты <b>не</b> из OpenStreetMap,

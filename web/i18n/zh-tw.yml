@@ -170,8 +170,9 @@ pages:
             title: 關於此網站
         building_on_taginfo:
             title: 用 taginfo 開發
-            text: |
+            pre: |
                 <p>你可以在自己的專案中使用來自 taginfo 的資料：</p>
+            api: |
                 <h3>API</h3>
                 <p>Taginfo 資料可由 REST API 存取。看看 
                 <a href="/taginfo/apidoc">API 文件</a>取得細節，一些一般資訊在 
@@ -179,12 +180,14 @@ pages:
                 運作 taginfo API 的伺服器並沒有無限的資源，
                 請負責地使用 API。有疑問請聯絡你所使用的網站的維護者
                 或在郵件列表上跟我們講。</p>
+            download: |
                 <h3>下載</h3>
                 <p>如果你想要玩玩 taginfo 用的資料，你能下載定期更新的 Sqlite 資料庫檔案，
                 所有的預先處理已經先幫你做好了。
                 看看<a href="/download">下載頁面</a>取得檔案列表。
                 注意這些檔案之中有些會非常大，如果你想定期地下載他們，
                 請聯絡你所使用的網站的維護者或在郵件列表上跟我們講。</p>
+            license: |
                 <h3>授權</h3>
                 <p>taginfo 可用的資料是採用 ODbL 授權，跟 
                 <a class="extlink" href="//www.openstreetmap.org/copyright">
@@ -203,7 +206,7 @@ pages:
                 在 <a class="extlink" href="//wiki.openstreetmap.org/wiki/Taginfo/I18N">OSM wiki</a> 上。</p>
                 <h3>程式碼</h3>
                 <p>所有在 taginfo 網站背後的軟體都是開放原始碼的，你能
-                在 <a class="extlink" href="https://github.com/joto/taginfo/">GitHub</a> 上取得。軟體總覽
+                在 <a class="extlink" href="https://github.com/taginfo/taginfo/">GitHub</a> 上取得。軟體總覽
                 請見 OSM Wiki 上關於 <a class="extlink"
                 href="//wiki.openstreetmap.org/wiki/Taginfo/Architecture">taginfo 架構</a>
                 的頁面。</p>
@@ -215,9 +218,9 @@ pages:
                 wiki 上</a>。</p>
                 <h3>漏洞回報和功能要求</h3>
                 <p>漏洞回報和功能要求應該要直接在 <a class="extlink"
-                href="https://github.com/joto/taginfo/issues">GitHub 議題追蹤</a>上反應，
+                href="https://github.com/taginfo/taginfo/issues">GitHub 議題追蹤</a>上反應，
                 或者你也可以來郵件列表上跟我們講。</p>
-                <h3聯絡/郵件列表</h3>
+                <h3>聯絡/郵件列表</h3>
                 <p>若你有疑問或想要幫助，
                 在 <a class="extlink" href="//lists.openstreetmap.org/listinfo/taginfo-dev">taginfo-dev 郵件列表</a>
                 跟我們聯絡。</p>
@@ -232,11 +235,11 @@ pages:
             intro: 這是目前使用的資料來源列表，未來可能會整合更多來源。
         description:
             db: |
-                <p>關於鍵、標籤和關係類型的統計數據皆產生自 <a class="extlink" href="http://planet.openstreetmap.org/">OSM 資料庫</a>（或某個提取檔），跟地圖上的節點和路徑一樣。</p>
+                <p>關於鍵、標籤和關係類型的統計數據皆產生自 <a class="extlink" href="https://planet.openstreetmap.org/">OSM 資料庫</a>（或某個提取檔），跟地圖上的節點和路徑一樣。</p>
             wiki: |
                 <p><a class="extlink" href="//wiki.openstreetmap.org/">OSM Wiki</a> 已被讀取，而且所有鍵:*、標籤:* 和關係:* 頁面（在所有不同語言）已被分析。描述、圖片、相關標籤等皆由它們取出。</p>
             languages: |
-                <p>Taginfo 取得世界不同語言的資料，它們的代碼、名稱等來自數個 <a class="extlink" href="http://www.iana.org/">IANA</a> 和 <a class="extlink" href="http://www.unicode.org/">Unicode</a> 登記名冊。</p>
+                <p>Taginfo 取得世界不同語言的資料，它們的代碼、名稱等來自數個 <a class="extlink" href="https://www.iana.org/">IANA</a> 和 <a class="extlink" href="http://www.unicode.org/">Unicode</a> 登記名冊。</p>
             projects: |
                 <p>以一些方式使用 OSM 標籤的專案，像是編輯器、路線規劃等，請見<a href="/projects">專案列表</a>。</p>
         updates:
@@ -249,7 +252,7 @@ pages:
     download:
         intro: |
             <p>你能在這裡下載 taginfo 所用的資料庫。所有資料被儲存
-            在 <a class="extlink" href="http://www.sqlite.org/">Sqlite</a> 資料庫裡。
+            在 <a class="extlink" href="https://www.sqlite.org/">Sqlite</a> 資料庫裡。
             資料庫檔案接著用 <a class="extlink" href="http://www.bzip.org/">bzip2</a> 打包。</p>
             <p>如果你不想下載這些資料庫，但需要自動存取這些資料，
             你也可以用 <a href="/about">API</a>。</p>
@@ -605,12 +608,12 @@ reports:
                 region: 地區
                 variant: 變體
             intro: |
-                <p><a href="http://www.ietf.org/">IETF</a> 在它的 <a href="http://tools.ietf.org/html/bcp47">Tags for Identifying Languages
+                <p><a href="https://www.ietf.org/">IETF</a> 在它的 <a href="https://tools.ietf.org/html/bcp47">Tags for Identifying Languages
                 (BCP47)</a> 標準中定義了<i>語言代碼</i>
                 。語言代碼包含一個或更多描述該語言、文字、變體等的<i>子標籤</i>。
                 下方列表顯示目前在 OSM 中被登記為適合的子標籤。
                 更多資訊參見
-                <a href="http://en.wikipedia.org/wiki/IETF_language_tag">在維基百科
+                <a href="https://en.wikipedia.org/wiki/IETF_language_tag">在維基百科
                 上的 IETF 語言標籤文章</a>和<a
                 href="http://www.langtag.net/">langtag.net</a>網站。</p>
                 <p>注意此表格顯示的資料<b>不是</b>來自 OpenStreetMap，

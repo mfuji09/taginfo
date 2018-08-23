@@ -1,6 +1,6 @@
 /*
 
-  Copyright (C) 2012-2016 Jochen Topf <jochen@topf.org>.
+  Copyright (C) 2012-2017 Jochen Topf <jochen@topf.org>.
 
   This file is part of Tagstats.
 
@@ -76,8 +76,7 @@ int main(int argc, char* argv[]) {
 
     std::string selection_database_name;
 
-    std::string location_index_type = "SparseMmapArray";
-    const auto& map_factory = osmium::index::MapFactory<osmium::unsigned_object_id_type, rough_position_type>::instance();
+    std::string index_type_name = "SparseMmapArray";
 
     double top    =   90;
     double right  =  180;
@@ -96,16 +95,17 @@ int main(int argc, char* argv[]) {
         switch (c) {
             case 'H':
                 print_help();
-                exit(0);
+                std::exit(0);
             case 'i':
-                location_index_type = optarg;
+                index_type_name = optarg;
                 break;
             case 'I':
                 std::cout << "Available index types:\n";
-                for (const auto& map_type : map_factory.map_types()) {
-                    std::cout << "  " << map_type << "\n";
-                }
-                exit(0);
+                std::cout << "  DenseMemArray\n";
+                std::cout << "  DenseMmapArray\n";
+                std::cout << "  SparseMemArray\n";
+                std::cout << "  SparseMmapArray\n";
+                std::exit(0);
             case 's':
                 selection_database_name = optarg;
                 break;
@@ -131,27 +131,29 @@ int main(int argc, char* argv[]) {
                 height = atoi(optarg);
                 break;
             default:
-                exit(1);
+                std::exit(1);
         }
     }
 
     if (argc - optind != 2) {
         std::cerr << "Usage: " << argv[0] << " [OPTIONS] OSMFILE DATABASE" << std::endl;
-        exit(1);
+        std::exit(1);
     }
 
-    osmium::util::VerboseOutput vout(true);
+    osmium::util::VerboseOutput vout{true};
     vout << "Starting tagstats...\n";
 
     GeoDistribution::set_dimensions(width, height);
-    osmium::io::File infile(argv[optind]);
-    Sqlite::Database db(argv[optind+1], SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
-    MapToInt<rough_position_type> map_to_int(left, bottom, right, top, width, height);
+    osmium::io::File input_file{argv[optind]};
+    Sqlite::Database db{argv[optind+1], SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE};
 
-    auto location_index = map_factory.create_map(location_index_type);
-    TagStatsHandler handler(db, selection_database_name, map_to_int, min_tag_combination_count, vout, std::move(location_index));
+    MapToInt map_to_int{left, bottom, right, top, width, height};
 
-    osmium::io::Reader reader(infile);
+    const bool better_resolution = (width * height) >= (1 << 16);
+    LocationIndex location_index{index_type_name, better_resolution};
+    TagStatsHandler handler{db, selection_database_name, map_to_int, min_tag_combination_count, vout, location_index};
+
+    osmium::io::Reader reader{input_file};
     osmium::apply(reader, handler);
 
     handler.write_to_database();
